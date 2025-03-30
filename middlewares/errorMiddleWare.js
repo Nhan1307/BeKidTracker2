@@ -1,12 +1,29 @@
-// Enggo-Server/middlewares/errorMiddleWare.js
-const errorMiddleHandle = (err, req, res, next) => {
-    const statusCode = res.statusCode ? res.statusCode : 500;
+// Desc: Middleware to handle errors
+const jwt = require('jsonwebtoken');
+const UserModel = require("../models/userModel");
+require('dotenv').config();
 
-    res.status(statusCode).json({
-        message: err.message || 'An unknown error occurred',
-        statusCode,
-        stack: process.env.NODE_ENV === 'production' ? null : err.stack,
-    });
+const authMiddleware = async (req, res, next) => {
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+        return res.status(401).json({ message: "No token, authorization denied" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const user = await UserModel.findById(decoded.id).select("-password");
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        req.user = user;
+        next();
+    } catch (error) {
+        console.error("Token verification failed", error);
+        res.status(401).json({ message: "Invalid token" });
+    }
 };
 
-module.exports = errorMiddleHandle;
+module.exports = authMiddleware;

@@ -93,9 +93,12 @@ const register = asyncHandler(async (req, res) => {
 
     }
 
+    // Xác định role: chỉ 'admin@gmail.com' mới được làm admin, còn lại là user
+    const role = email === "admin@gmail.com" ? "admin" : "user";
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const newUser = new UserModel({ email, fullname, password: hashedPassword ,photoURL});
+    const newUser = new UserModel({ email, fullname, password: hashedPassword ,photoURL ,role});
     await newUser.save();
     res.status(200).json({
         message: "User created!",
@@ -104,7 +107,9 @@ const register = asyncHandler(async (req, res) => {
             email: newUser.email,
             fullname: newUser.fullname,
             accesstoken: await getJWT(email, newUser.id),
-            photoURL: newUser.photoURL
+            photoURL: newUser.photoURL,
+            role: newUser.role,
+            
         }
 
     });
@@ -140,6 +145,7 @@ const login = asyncHandler(async (req, res) => {
             email: existUser.email,
             fullname: existUser.fullname,
             accesstoken: await getJWT(email, existUser.id),
+            role: existUser.role,
         }
     });
 });
@@ -267,6 +273,43 @@ const handleLoginWithGoogle = asyncHandler(async (req, res) => {
     });
 });
 
+// Thêm child vào danh sách của user
+const updateUserChild = asyncHandler(async (req, res) => {
+    const { userId, childId } = req.body;
+
+    if (!userId || !childId) {
+        return res.status(400).json({ message: "User ID and Child ID are required." });
+    }
+
+    try {
+        const user = await UserModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        // Kiểm tra xem childId đã tồn tại trong danh sách chưa
+        if (user.child.includes(childId)) {
+            return res.status(400).json({ message: "Child already exists for this user." });
+        }
+
+        // Thêm child mới vào danh sách
+        user.child.push(childId);
+        user.updatedAt = Date.now(); // Cập nhật thời gian cập nhật
+
+        await user.save();
+
+        res.status(200).json({
+            message: "Child added successfully!",
+            data: user,
+        });
+    } catch (error) {
+        console.error("Error updating user:", error);
+        res.status(500).json({ message: "Internal server error." });
+    }
+});
+
+
 
 module.exports = {
     register,
@@ -274,5 +317,6 @@ module.exports = {
     verification,
     forgotPassword,
     handleLoginWithGoogle,
-    changePassword
+    changePassword,
+    updateUserChild
 }

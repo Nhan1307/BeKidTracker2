@@ -2,7 +2,7 @@
   "name": "childmanagement-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",  
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js"
@@ -24,6 +24,7 @@
     "nodemon": "^3.1.4"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^20.14.11"
   }
 }
