@@ -1,17 +1,17 @@
 const express = require("express");
 const {
-  addThoiGianBieu,
-  getThoiGianBieu,
-  getThoiGianBieuById,
-  deleteThoiGianBieu
+  createThoiGianBieu,
+  getThoiGianBieuByChild,
+  updateThoiGianBieu,
+  deleteThoiGianBieu,
 } = require("../controller/thoiGianBieuController");
 const authMiddleware = require("../middlewares/errorMiddleWare");
 
 const router = express.Router();
 
-router.post("/", authMiddleware, addThoiGianBieu);
-router.get("/", authMiddleware, getThoiGianBieu);
-router.get("/:id", authMiddleware, getThoiGianBieuById);
+router.post("/:childId", authMiddleware, createThoiGianBieu);
+router.put("/:id", authMiddleware, updateThoiGianBieu);
+router.get("/:childId", authMiddleware, getThoiGianBieuByChild);
 router.delete("/:id", authMiddleware, deleteThoiGianBieu);
 
 
