@@ -1,36 +1,55 @@
+// models/scheduleModel.js
 const mongoose = require("mongoose");
 
-const ScheduleSchema = new mongoose.Schema(
-  {    
-    semester: {
-      type: String,
-      required: true,
-      enum: ["Học kỳ 1", "Học kỳ 2", "Học kỳ hè"],
-    },
-    academicYear: { type: String, required: true }, //"2024-2025"
-    activities: [
-      {
-        dayOfWeek: {
-          type: String,
-          required: true,
-          enum: [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday",
-          ],
-        },
-        period: { type: Number, required: true }, // Số tiết học (1-10)
-        subject: String, // Môn học
-        description: String, // Nội dung chi tiết
-      },
-    ],
+const scheduleSchema = new mongoose.Schema({
+  dateFrom: {
+    type: Date,
+    required: true,
   },
-  { timestamps: true }
-);
+  dateTo: {
+    type: Date,
+    required: true,
+  },
+  dayOfWeek: {
+    type: [String],
+    required: true,
+    enum: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật"],
+  },
+  subjectName: {
+    type: String,
+    required: true,
+  },
+  teacherName: {
+    type: String,
+    required: true,
+  },
+  lessonPeriod: {
+    type: String,
+    required: true,
+    enum: ["1-3", "4-6", "7-9"],
+  },
+  isExam: {
+    type: Boolean,
+    default: false,
+  },
+  isWeekly: {
+    type: Boolean,
+    default: true,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  child: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Children",
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
-const Schedule = mongoose.model("Schedule", ScheduleSchema);
-module.exports = Schedule;
+module.exports = mongoose.model("Schedule", scheduleSchema);

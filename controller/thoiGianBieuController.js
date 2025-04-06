@@ -1,5 +1,5 @@
 const ThoiGianBieu = require("../models/thoiGianBieu");
-const User = require("../models/userModel");
+ const User = require("../models/userModel");
 
 // Thêm thời gian biểu mới cho 1 trẻ
 const createThoiGianBieu = async (req, res) => {
@@ -7,9 +7,7 @@ const createThoiGianBieu = async (req, res) => {
   const { title, startTime, endTime, repeat, note } = req.body;
   const { childId } = req.params; // Lấy childId từ params
   console.log(req.body);
-
   console.log("childId", childId);
-
   if (!childId || !title || !startTime || !endTime) {
     return res.status(400).json({ message: "Thiếu thông tin bắt buộc!" });
   }
@@ -20,7 +18,6 @@ const createThoiGianBieu = async (req, res) => {
       .status(403)
       .json({ message: "Không có quyền thêm thời gian biểu cho trẻ này!" });
   }
-
   const schedule = await ThoiGianBieu.create({
     user: userId,
     child: childId,
@@ -45,27 +42,21 @@ const getThoiGianBieuByChild = async (req, res) => {
   if (!childId) {
     return res.status(400).json({ message: "Child ID is required!" });
   }
-
   try {
     const user = await User.findById(userId);
     if (!user || !Array.isArray(user.child)) {
-      return res
-        .status(403)
-        .json({
-          message: "User does not have access to this child's schedule!",
-        });
+      return res.status(403).json({
+        message: "User does not have access to this child's schedule!",
+      });
     }
 
     const hasAccess = user.child.some(
       (id) => id.toString() === childId.toString()
     );
     if (!hasAccess) {
-      return res
-        .status(403)
-        .json({
-          message:
-            "You do not have permission to access this child's schedule!",
-        });
+      return res.status(403).json({
+        message: "You do not have permission to access this child's schedule!",
+      });
     }
 
     const schedules = await ThoiGianBieu.find({
@@ -74,7 +65,6 @@ const getThoiGianBieuByChild = async (req, res) => {
     }).sort({
       startTime: 1,
     });
-
     res.status(200).json({
       message: "Successfully retrieved the schedule!",
       data: schedules,
@@ -102,7 +92,6 @@ const updateThoiGianBieu = async (req, res) => {
       .status(403)
       .json({ message: "Bạn không có quyền sửa thời gian biểu này!" });
   }
-
   schedule.title = title || schedule.title;
   schedule.startTime = startTime || schedule.startTime;
   schedule.endTime = endTime || schedule.endTime;
@@ -116,6 +105,7 @@ const updateThoiGianBieu = async (req, res) => {
     data: schedule,
   });
 };
+
 
 // Xóa thời gian biểu
 const deleteThoiGianBieu = async (req, res) => {
@@ -132,15 +122,14 @@ const deleteThoiGianBieu = async (req, res) => {
       .status(403)
       .json({ message: "Bạn không có quyền xóa thời gian biểu này!" });
   }
-
   await schedule.deleteOne();
-
+ 
   res.status(200).json({ message: "Xóa thời gian biểu thành công!" });
 };
 
 module.exports = {
   createThoiGianBieu,
-  getThoiGianBieuByChild,
-  updateThoiGianBieu,
-  deleteThoiGianBieu,
+   getThoiGianBieuByChild,
+   updateThoiGianBieu,
+   deleteThoiGianBieu,
 };
