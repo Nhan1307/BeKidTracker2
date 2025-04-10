@@ -1,14 +1,15 @@
 const ThoiGianBieu = require("../models/thoiGianBieu");
  const User = require("../models/userModel");
+ const dayjs = require("dayjs");
 
 // Thêm thời gian biểu mới cho 1 trẻ
 const createThoiGianBieu = async (req, res) => {
   const userId = req.user._id;
-  const { title, startTime, endTime, repeat, note } = req.body;
+  const { title, startTime, endTime, repeat, note ,dateFrom} = req.body;
   const { childId } = req.params; // Lấy childId từ params
   console.log(req.body);
   console.log("childId", childId);
-  if (!childId || !title || !startTime || !endTime) {
+  if (!childId || !title || !startTime || !endTime || !dateFrom) {
     return res.status(400).json({ message: "Thiếu thông tin bắt buộc!" });
   }
 
@@ -18,9 +19,14 @@ const createThoiGianBieu = async (req, res) => {
       .status(403)
       .json({ message: "Không có quyền thêm thời gian biểu cho trẻ này!" });
   }
+
+   // 👉 Chuyển đổi định dạng "dd/MM/yyyy" thành Date object
+      const parsedDateFrom = dayjs(dateFrom, "DD/MM/YYYY").toDate();
+
   const schedule = await ThoiGianBieu.create({
     user: userId,
     child: childId,
+    dateFrom: parsedDateFrom,
     title,
     startTime,
     endTime,

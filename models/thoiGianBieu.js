@@ -12,6 +12,10 @@ const ThoiGianBieuSchema = new mongoose.Schema(
       ref: "Children",
       required: true,
     },
+    dateFrom: {
+      type: Date,
+      required: true,
+    },
     title: { type: String, required: true },              // Tên hoạt động
     startTime: { type: String, required: true },          // Giờ bắt đầu (ví dụ: "08:30")
     endTime: { type: String, required: true },            // Giờ kết thúc (ví dụ: "09:00")

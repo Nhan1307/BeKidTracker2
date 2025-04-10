@@ -26,7 +26,7 @@ const scheduleSchema = new mongoose.Schema({
   lessonPeriod: {
     type: String,
     required: true,
-    enum: ["1-3", "4-6", "7-9"],
+    
   },
   isExam: {
     type: Boolean,
