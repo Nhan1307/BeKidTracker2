@@ -1,3 +1,5 @@
+
+
 const { log, error } = require("console");
 const UserModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
@@ -318,5 +320,5 @@ module.exports = {
     forgotPassword,
     handleLoginWithGoogle,
     changePassword,
-    updateUserChild
+    updateUserChild,
 }
