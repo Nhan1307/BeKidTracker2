@@ -6,6 +6,7 @@ const thoiGianBieuRouter = require('./routers/thoiGianBieuRouter');
 const scheduleRouter = require('./routers/scheduleRouter');
 const evaluationRouter = require("./routers/evaluationRouter");
 const vnpayRouter = require('./routers/vnpayRouter');
+const adminRouter = require('./routers/adminRouter');
 
 const connectDB = require('./configs/connectDB');
 const errorMiddleHandle = require('./middlewares/errorMiddleWare');
@@ -28,7 +29,7 @@ app.use('/api/thoigianbieu', thoiGianBieuRouter);
 app.use('/api/schedule', scheduleRouter);
 app.use("/api/evaluation", evaluationRouter);
 app.use('/api/vnpay', vnpayRouter);
-
+app.use('/api/admin', adminRouter);
 
 app.use(errorMiddleHandle);
 
@@ -36,5 +37,5 @@ app.listen(PORT, '0.0.0.0', (err) => {
   if (err) {
     console.log(err);
   }
-  console.log(`Server is running at : http://localhost:${PORT}`);
+  console.log(`Server is running at : http://0.0.0.0:${PORT}`);
 });
