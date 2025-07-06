@@ -290,7 +290,7 @@ const AccountScreen = ({ navigation }) => {
                 alignItems: "center",
                 marginTop: 10,
               }}
-              onPress={() => navigation.navigate("UnlockPerformanceChart")}
+              onPress={() => navigation.navigate("PaymentScreen")}
             >
               <View style={{ flex: 1.5, justifyContent: "center", alignItems: "center" }}>
                 <Image
@@ -300,7 +300,7 @@ const AccountScreen = ({ navigation }) => {
               </View>
               <View style={{ flex: 7, justifyContent: "center" }}>
                 <Text style={{ fontSize: 17, fontWeight: 500, paddingLeft: 5 }}>
-                  Biểu đồ hiệu suất chi tiết
+                  Thanh toán qua PayOS
                 </Text>
               </View>
               <View style={{ flex: 1.5, justifyContent: "center", alignItems: "center" }}>

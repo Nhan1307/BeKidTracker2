@@ -26,7 +26,10 @@ import InformationOfUser from "../view/informationOfUser/InformationOfUser";
 import DevelopThinking from "../view/developThinking/DevelopThinking";
 import AddDevelopThinking from "../view/developThinking/AddDevelopThinking";
 
-import UnlockPerformanceChart from "../view/account/UnlockPerformanceChart";
+import SuccessScreen from '../view/payment/SuccessScreen';
+import FailScreen from '../view/payment/FailScreen';
+import PayOSPaymentScreen from '../view/payment/PayOSPaymentScreen';
+import PaymentScreen from '../view/payment';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -229,11 +232,6 @@ const AccountNavigation = () => {
         component={ResetPassword}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="UnlockPerformanceChart"
-        component={UnlockPerformanceChart}
-        options={{ headerShown: false }}
-      />
     </Stack.Navigator>
   );
 };
@@ -302,6 +300,29 @@ const MainNavigator = () => {
       <Stack.Screen
         name="DevelopThinkingNavigation"
         component={DevelopThinkingNavigation}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="SuccessScreen"
+        component={SuccessScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="FailScreen"
+        component={FailScreen}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="PayOSPaymentScreen"
+        component={PayOSPaymentScreen}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="PaymentScreen"
+        component={PaymentScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

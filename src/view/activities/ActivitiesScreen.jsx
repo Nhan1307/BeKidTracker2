@@ -18,7 +18,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { getToken } from "../../ultis/authHelper";
 import { appInfo } from "../../constants/appInfos";
 import { useDispatch } from "react-redux";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 
 const ActivitiesScreen = ({ navigation }) => {
   const theme = useContext(themeContext);
@@ -32,6 +32,7 @@ const ActivitiesScreen = ({ navigation }) => {
   const [showPicker, setShowPicker] = useState(false);
   const [childActivities, setChildActivities] = useState([]);
   const [date, setDate] = useState(new Date());
+  const isFocused = useIsFocused();
 
   const getIconByTitle = (title) => {
     const icons = {
@@ -246,6 +247,12 @@ const ActivitiesScreen = ({ navigation }) => {
       fetchScheduleByChild(selectedChild._id, date);
     }
   }, [selectedChild]);
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchScheduleByChild(selectedChild._id, date);
+    }
+  }, [isFocused]);
 
   const handleChildChange = (valFunc) => {
     const selectedName = valFunc();
