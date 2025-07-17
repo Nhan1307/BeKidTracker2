@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import { registerRootComponent } from 'expo';
 
 import App from './App';
@@ -7,7 +7,7 @@ import App from './App';
 // It also ensures that whether you load the app in Expo Go or in a native build,
 // the environment is set up appropriately
 registerRootComponent(App);
-=======
+
 const express = require('express');
 const cors = require('cors');
 const authRouter = require('./routers/authRouter');
@@ -49,4 +49,4 @@ app.listen(PORT, '0.0.0.0', (err) => {
   }
   console.log(`Server is running at : http://0.0.0.0:${PORT}`);
 });
->>>>>>> 781ecb99db841cef02727853057034047b9c4fed
+
