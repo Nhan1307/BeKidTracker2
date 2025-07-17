@@ -6,7 +6,7 @@ import { appInfo } from "../constants/appInfos";
 
 
 const axiosClient = axios.create({
-    baseURL: appInfo.BASE_URL,
+    baseURL: "http://192.168.111.5:3000/",
     paramsSerializer: params => queryString.stringify(params)
 })
 

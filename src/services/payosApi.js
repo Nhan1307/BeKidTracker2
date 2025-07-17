@@ -1,10 +1,15 @@
 import axios from 'axios';
 
-export const createPayOSOrder = async (amount, description, userId) => {
-  const res = await axios.post('https://c2de-2001-ee0-4fd7-f7a0-cdf1-4913-429f-1b0a.ngrok-free.app/api/payos/create-order', {
+export const createPayOSOrder = async (amount, description, accessToken) => {
+// Thay đổi URL này để test local
+const res = await axios.post('http://192.168.111.5:3000/api/payos/create-order', {
     amount,
-    description,
-    userId
+    description
+  }, {
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    }
   });
-  return res.data; // { checkoutUrl, orderCode }
+  return res.data; 
 }; 

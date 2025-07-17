@@ -28,7 +28,7 @@ import AddDevelopThinking from "../view/developThinking/AddDevelopThinking";
 
 import SuccessScreen from '../view/payment/SuccessScreen';
 import FailScreen from '../view/payment/FailScreen';
-import PayOSPaymentScreen from '../view/payment/PayOSPaymentScreen';
+
 import PaymentScreen from '../view/payment';
 
 const Stack = createNativeStackNavigator();
@@ -314,11 +314,11 @@ const MainNavigator = () => {
         options={{ headerShown: false }}
       />
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="PayOSPaymentScreen"
         component={PayOSPaymentScreen}
         options={{ headerShown: false }}
-      />
+      /> */}
 
       <Stack.Screen
         name="PaymentScreen"

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, Button, ActivityIndicator, Alert, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Button, ActivityIndicator, Alert, StyleSheet, FlatList, TouchableOpacity, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createPayOSOrder } from '../../services/payosApi';
+import { useSelector } from 'react-redux';
+import { authSelector } from '../../redux/reducers/authReducer';
 
 const PACKAGES = [
   { id: 1, name: 'Gói Cơ Bản', price: 100000, desc: 'Sử dụng 1 tháng' },
@@ -13,17 +15,31 @@ const PaymentScreen = ({ route }) => {
   const navigation = useNavigation();
   const [selected, setSelected] = useState(PACKAGES[0]);
   const [loading, setLoading] = useState(false);
-  // Giả lập userId, thực tế lấy từ context hoặc redux
-  const userId = route?.params?.userId || null;
+  
+  // Lấy thông tin user từ Redux store
+  const auth = useSelector(authSelector);
 
   const handlePayOSPayment = async () => {
+    if (!auth.accesstoken) {
+      Alert.alert('Lỗi', 'Vui lòng đăng nhập để tiếp tục!');
+      return;
+    }
+    
     setLoading(true);
     try {
-      const { checkoutUrl } = await createPayOSOrder(selected.price, `Thanh toán ${selected.name}`, userId);
+      const { checkoutUrl } = await createPayOSOrder(selected.price, `Thanh toán ${selected.name}`, auth.accesstoken);
       setLoading(false);
-      navigation.navigate('PayOSPaymentScreen', { checkoutUrl });
+      
+      
+      const supported = await Linking.canOpenURL(checkoutUrl);
+      if (supported) {
+        await Linking.openURL(checkoutUrl);
+      } else {
+        Alert.alert('Lỗi', 'Không thể mở link thanh toán');
+      }
     } catch (err) {
       setLoading(false);
+      console.error('PayOS Error:', err);
       Alert.alert('Lỗi', 'Không thể tạo đơn hàng PayOS. Vui lòng thử lại!');
     }
   };
