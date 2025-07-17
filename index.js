@@ -43,10 +43,7 @@ app.use('/api/admin', adminRouter);
 
 app.use(errorMiddleHandle);
 
-app.listen(PORT, '0.0.0.0', (err) => {
-  if (err) {
-    console.log(err);
-  }
-  console.log(`Server is running at : http://0.0.0.0:${PORT}`);
-});
+  app.listen(process.env.PORT || 3000, () => {
+    console.log('Server is running...');
+  });
 
